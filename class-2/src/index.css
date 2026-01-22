@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+body {
+  @apply w-full h-screen grid place-items-center bg-gray-900 text-white;
+}
+
+h1 {
+  @apply mb-8 text-center text-2xl font-bold;
+}

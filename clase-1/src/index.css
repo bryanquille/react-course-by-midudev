@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+body {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  background-color: #333;
+  color: #eee;
+}
+
+.isFollowing {
+  width: 116px;
+  border: 1px solid #ddd;
+  background-color: transparent;
+  color: #eee;
+}
+
+.isFollowing:hover {
+  border-color: #9a2d2d;
+  background-color: #9a2d2dcd;
+  color: #fc5959;
+}
+
+.hover-btn-text {
+  display: none;
+}
+
+.isFollowing:hover .first-btn-text {
+  display: none;
+}
+
+.isFollowing:hover .hover-btn-text {
+  display: inline;
+}

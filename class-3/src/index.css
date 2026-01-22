@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+body {
+  @apply w-full h-screen grid place-items-center overflow-hidden bg-neutral-900 text-neutral-50;
+}

@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+body {
+  @apply bg-slate-900 text-slate-200;
+}
+
+.movies-list {
+  @apply w-full grid gap-6 justify-items-center;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* From Uiverse.io by myselfvenky */ 
+.spinner {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  margin-top: 8rem;
+  border-radius: 100%;
+  background-color: aqua;
+  display: grid;
+  place-items: center;
+  animation: zoomin 0.5s infinite alternate-reverse;
+ }
+ 
+ .inner {
+  background-color: #0f172b;
+  width: 80%;
+  height: 80%;
+  border-radius: 100%;
+ }
+ 
+ @keyframes zoomin {
+  0% {
+   transform: scale(1);
+   box-shadow: 0 0 100px 20px rgb(16, 71, 71);
+  }
+ 
+  100% {
+   transform: scale(2);
+   box-shadow: 0 0 100px 20px #000;
+  }
+ }
