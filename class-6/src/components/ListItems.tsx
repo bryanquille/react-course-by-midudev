@@ -1,13 +1,5 @@
+import type { Item } from "../types/types"
 import Items from "./Items"
-
-type Item = {
-  id: number
-  title: string
-  price: number
-  description: string
-  category: string
-  image: string
-}
 
 type ListItemsProps = {
   items: Item[]

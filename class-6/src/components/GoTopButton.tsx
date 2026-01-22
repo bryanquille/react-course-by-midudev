@@ -4,7 +4,7 @@ function GoTopButton() {
   return (
     <button
       type="button"
-      className="fixed bottom-7 right-7 p-2.5 grid place-items-center bg-stone-300 rounded-full hover:bg-neutral-400"
+      className="fixed bottom-7 right-7 cursor-pointer p-2.5 grid place-items-center bg-stone-300 rounded-full hover:bg-neutral-400"
       onClick={goTop}
     >
       <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#0f172b">
