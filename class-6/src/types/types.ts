@@ -5,4 +5,6 @@ export type Item = {
   description: string
   category: string
   image: string
+  quantity?: number
+  total_price?: number
 }

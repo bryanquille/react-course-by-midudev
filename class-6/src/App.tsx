@@ -6,6 +6,7 @@ import ListItems from "./components/ListItems"
 import Filters from "./components/Filters"
 import { ItemsContext } from "./context/ItemsContext"
 import { FiltersContext } from "./context/FiltersContext"
+import Cart from "./components/cart/Cart"
 
 function App() {
   const { heightEl, element } = useHeightElement()
@@ -15,7 +16,6 @@ function App() {
   const filterItems = filtersContext?.filterItems || undefined
 
   const filteredItems = filterItems && filterItems(items)
-
   return (
     <>
       <Header elementRef={element} />
@@ -32,6 +32,7 @@ function App() {
           <ListItems items={filteredItems || []} />
         }
       </main>
+      <Cart />
       <GoTopButton />
     </>
   )

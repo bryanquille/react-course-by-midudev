@@ -18,3 +18,19 @@ h1 {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
 }
+
+th, td {
+  @apply px-3 py-2 border-2 border-slate-50 text-center;
+}
+
+button {
+  @apply cursor-pointer transition-all duration-150;
+}
+
+.closed-cart {
+  transform: translateY(200%);
+}
+
+.opened-cart {
+  transform: translateY(0);
+}
