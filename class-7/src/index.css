@@ -1,0 +1,11 @@
+body {
+  padding: 2rem;
+  padding-bottom: 3rem;
+}
+
+img {
+  display: block;
+  width: 90%;
+  max-width: 500px;
+  margin-bottom: 1rem;
+}
