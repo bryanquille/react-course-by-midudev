@@ -1,5 +1,5 @@
 body {
-  padding: 2rem;
+  padding-top: 2rem;
   padding-bottom: 3rem;
 }
 
@@ -8,4 +8,11 @@ img {
   width: 90%;
   max-width: 500px;
   margin-bottom: 1rem;
+}
+
+#root {
+  width: 85%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
