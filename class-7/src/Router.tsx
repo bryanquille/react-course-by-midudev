@@ -1,35 +1,51 @@
-import { useEffect, useState } from "react"
-import { EVENTS } from "./constants"
-
-type PageType = {
-  path: string
-  component: React.ComponentType
-}
+import { Children } from "react"
+import { match } from "path-to-regexp"
+import { useCurrentPath } from "./hooks/useCurrentPath"
+import type { PageType } from "./types/types"
 
 type RouterPropsTypes = {
   routes: PageType[]
   defaultComponent?: React.ComponentType
+  children?: React.ReactNode
 }
 
-function Router({ routes = [], defaultComponent: DefaultComponent = () => <h1>404: Not Found</h1> }: RouterPropsTypes) {
-  const [currentPath, setCurrentPath] = useState(window.location.pathname)
+function Router({
+  routes = [],
+  defaultComponent: DefaultComponent = () => <h1>404: Not Found</h1>,
+  children
+}: RouterPropsTypes) {
+  const { currentPath } = useCurrentPath()
 
-  useEffect(() => {
-    const onLocationChange = () => {
-      setCurrentPath(window.location.pathname)
-    }
+  let routeParams = {}
 
-    window.addEventListener(EVENTS.PUSHSTATE, onLocationChange)
-    window.addEventListener(EVENTS.POSTSTATE, onLocationChange)
-    return () => {
-      window.removeEventListener(EVENTS.PUSHSTATE, onLocationChange)
-      window.removeEventListener(EVENTS.POSTSTATE, onLocationChange)
-    }
-  }, [])
+  const routesFromChildren = Children.map(children, (child: any) => {
+    const { props, type } = child
+    const { name } = type
+    const isRoute = name === 'Route'
 
-  const Page = routes.find(({path}) => path === currentPath)?.component
+    return isRoute ? props : null
+  })
 
-  return Page ? <Page /> : <DefaultComponent />
+  const routesToUse = routes.concat(routesFromChildren).filter(Boolean) as PageType[]
+
+  const Page = routesToUse.find(({ path }) => {
+    if (path === currentPath) return true
+
+    /*
+      Usamos path-to-regexp para detectar rutas dinámicas
+      /search/:query <-- :query es una ruta dinámica
+    */
+    const matcherUrl = match(path, { decode: decodeURIComponent })
+    const matched = matcherUrl(currentPath)
+    if (!matched) return false
+    routeParams = matched.params
+    return true
+
+  })?.component
+
+  return Page
+    ? <Page routeParams={routeParams} />
+    : <DefaultComponent />
 }
 
 export default Router

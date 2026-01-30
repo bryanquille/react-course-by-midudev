@@ -1,23 +1,28 @@
-import HomePage from "./pages/HomePage"
-import AboutPage from "./pages/AboutPage"
 import Router from "./Router"
 import Page404 from "./errorPages/Page404"
+import SearchPage from "./pages/SearchPage"
+import Route from "./Route"
+import { lazy, Suspense } from "react"
+
+const lazyHomePage = lazy(() => import("./pages/HomePage"))
+const lazyAboutPage = lazy(() => import("./pages/AboutPage"))
 
 const appRoutes = [
   {
-    path: '/',
-    component: HomePage
-  },
-  {
-    path: '/about',
-    component: AboutPage
+    path: '/search/:query',
+    component: SearchPage
   }
 ]
 
 function App() {
   return (
     <>
-      <Router routes={appRoutes} defaultComponent={Page404} />
+      <Suspense fallback={<h1>Loading...</h1>}>
+        <Router routes={appRoutes} defaultComponent={Page404}>
+          <Route path="/" component={lazyHomePage} />
+          <Route path="/about" component={lazyAboutPage} />
+        </Router>
+      </Suspense>
     </>
   )
 }
