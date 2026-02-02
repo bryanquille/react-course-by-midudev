@@ -4,4 +4,4 @@ export const SUPPORTED_LANGUAGES = {
   de: 'Deutsch',
 }
 
-export const AUTO_LANGUAGE = 'auto'
+export const AUTO_LANGUAGE = 'Detectar idioma'

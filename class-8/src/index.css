@@ -6,5 +6,5 @@
 }
 
 body {
-  @apply w-full bg-slate-200;
+  @apply w-full;
 }
