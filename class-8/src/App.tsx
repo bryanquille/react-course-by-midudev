@@ -14,7 +14,7 @@ function App() {
     setFromLanguage,
     setToLanguage,
   } = useTranslate()
-  const { isSelectorOpen, toggleSelector, closeSelector } = useSelector()
+  const { selector, isSelectorOpen, toggleSelector, closeSelector } = useSelector()
 
   return (
     <>
@@ -37,6 +37,7 @@ function App() {
           {
             isSelectorOpen
               ? <ModalSelector
+                selector={selector}
                 closeSelector={closeSelector}
                 setFromLangague={setFromLanguage}
                 setToLanguage={setToLanguage}

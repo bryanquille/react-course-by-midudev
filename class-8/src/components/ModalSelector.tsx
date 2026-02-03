@@ -1,16 +1,30 @@
 import { SUPPORTED_LANGUAGES } from "../constants/constants"
 import type { fromLanguageType, LanguageTypes } from "../types/types"
+import { GoBackIcon } from "./Icons"
 
 type ModalSelectorPropsTypes = {
+  selector: 'from' | 'to'
   closeSelector: () => void
   setFromLangague?: (payload: fromLanguageType) => void
   setToLanguage?: (payload: LanguageTypes) => void
 }
 
-function ModalSelector({ closeSelector, setFromLangague, setToLanguage }: ModalSelectorPropsTypes) {
-  const handleSelect = (val: fromLanguageType | LanguageTypes) => {
-    if (setFromLangague) setFromLangague(val)
-    if (setToLanguage) setToLanguage(val)
+type ModalSelectorHandleSelectType = 
+  | ((val: fromLanguageType) => void)
+  | ((val: LanguageTypes) => void)
+
+function ModalSelector({
+  selector,
+  closeSelector,
+  setFromLangague,
+  setToLanguage,
+}: ModalSelectorPropsTypes) {
+  
+  const handleSelect: ModalSelectorHandleSelectType = (val) => {
+    if (setFromLangague && selector === 'from') setFromLangague(val as fromLanguageType)
+    if (setToLanguage && selector === 'to' && val !== "Detectar idioma") {
+      setToLanguage(val as LanguageTypes)
+    }
     closeSelector()
   }
 
@@ -25,30 +39,23 @@ function ModalSelector({ closeSelector, setFromLangague, setToLanguage }: ModalS
           className="cursor-pointer p-1.5 rounded-full transition-all duration-150 hover:bg-[#f0f0f0]"
           onClick={closeSelector}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24px"
-            height="24px"
-            viewBox="0 -960 960 960"
-            className="fill-[#474747] hover:fill-[#343434]"
-          >
-            <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
-          </svg>
+          <GoBackIcon />
         </button>
       </div>
       <ul className="p-2 grid grid-cols-3 text-center">
         {
-          Object.entries(SUPPORTED_LANGUAGES).map(([key, value]) => {
+          Object.entries(SUPPORTED_LANGUAGES).map(([key, literal]) => {
             return (
               <li key={key}>
                 <button
                   type="button"
                   className="cursor-pointer px-8 py-1 hover:bg-[#f5f5f5]"
-                  onClick={() => handleSelect(key)}
+                  onClick={() => handleSelect(key as fromLanguageType)}
                 >
-                  {value}
+                  {literal}
                 </button>
-              </li>)
+              </li>
+            )
           })
         }
       </ul>
