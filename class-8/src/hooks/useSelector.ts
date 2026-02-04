@@ -1,8 +1,9 @@
 import { useState } from "react"
+import type { selectorType } from "../types/types"
 
 export const useSelector = () => {
   const [isSelectorOpen, setIsSelectorOpen] = useState(false)
-  const [selector, setSelector] = useState<'from' | 'to'>('from')
+  const [selector, setSelector] = useState<selectorType>('from')
 
   const toggleSelector = () => {
     setIsSelectorOpen(!isSelectorOpen)

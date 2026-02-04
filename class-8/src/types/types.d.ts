@@ -18,3 +18,5 @@ export type actionType =
   | { type: 'SET_TO_LANGUAGE'; payload: string }
   | { type: 'SET_FROM_TEXT'; payload: string }
   | { type: 'SET_RESULT'; payload: string }
+
+export type selectorType = 'from' | 'to'

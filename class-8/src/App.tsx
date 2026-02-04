@@ -10,11 +10,23 @@ function App() {
   const {
     fromLanguage,
     toLanguage,
+    fromText,
+    result,
+    loading,
     interchangeLanguages,
     setFromLanguage,
     setToLanguage,
+    setFromText,
   } = useTranslate()
-  const { selector, isSelectorOpen, toggleSelector, closeSelector } = useSelector()
+
+  const { 
+    selector, 
+    setFromSelector, 
+    setToSelector, 
+    isSelectorOpen, 
+    toggleSelector, 
+    closeSelector 
+  } = useSelector()
 
   return (
     <>
@@ -24,12 +36,14 @@ function App() {
           <div className="mb-3 flex justify-between items-center gap-2">
             <Selector
               option={fromLanguage}
+              setFromSelector={setFromSelector}
               isSelectorOpen={isSelectorOpen}
               toggleSelector={toggleSelector}
             />
             <InterchangeBtn interchangeLanguages={interchangeLanguages} fromLanguage={fromLanguage} />
             <Selector
               option={toLanguage}
+              setToSelector={setToSelector}
               isSelectorOpen={isSelectorOpen}
               toggleSelector={toggleSelector}
             />
@@ -42,7 +56,12 @@ function App() {
                 setFromLangague={setFromLanguage}
                 setToLanguage={setToLanguage}
               />
-              : <InputOutput />
+              : <InputOutput
+                  fromText={fromText}
+                  setFromText={setFromText}
+                  loading={loading}
+                  result={result}
+                />
           }
         </div>
       </main>
