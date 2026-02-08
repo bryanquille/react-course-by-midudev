@@ -40,7 +40,10 @@ function App() {
               isSelectorOpen={isSelectorOpen}
               toggleSelector={toggleSelector}
             />
-            <InterchangeBtn interchangeLanguages={interchangeLanguages} fromLanguage={fromLanguage} />
+            <InterchangeBtn
+              interchangeLanguages={interchangeLanguages} 
+              fromLanguage={fromLanguage}
+            />
             <Selector
               option={toLanguage}
               setToSelector={setToSelector}

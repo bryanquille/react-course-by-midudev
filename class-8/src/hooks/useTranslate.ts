@@ -1,6 +1,6 @@
 import { useReducer } from "react"
 import type { actionType, fromLanguageType, LanguageTypes, stateType } from "../types/types"
-import { AUTO_LANGUAGE } from "../constants/constants"
+import { AUTO_LANGUAGE, SUPPORTED_LANGUAGES } from "../constants/constants"
 
 const initialState = {
   fromLanguage: AUTO_LANGUAGE,
@@ -61,10 +61,20 @@ export const useTranslate = () => {
   }
 
   const setFromLanguage = (payload: fromLanguageType) => {
+    if (payload === toLanguage && fromLanguage != AUTO_LANGUAGE) {
+      dispatch({ type: 'SET_TO_LANGUAGE', payload: fromLanguage })
+    } else if (payload === toLanguage && fromLanguage === AUTO_LANGUAGE) {
+      const newLanguage = Object.keys(SUPPORTED_LANGUAGES).filter(lang => lang != toLanguage)
+      dispatch({ type: 'SET_TO_LANGUAGE', payload: newLanguage[0] })
+    }
     dispatch({ type: "SET_FROM_LANGUAGE", payload })
   }
 
   const setToLanguage = (payload: LanguageTypes) => {
+    if (payload === fromLanguage) {
+      const newLanguage = Object.keys(SUPPORTED_LANGUAGES).filter(lang => lang != fromLanguage)
+      dispatch({ type: 'SET_FROM_LANGUAGE', payload: newLanguage[0] })
+    }
     dispatch({ type: "SET_TO_LANGUAGE", payload })
   }
 

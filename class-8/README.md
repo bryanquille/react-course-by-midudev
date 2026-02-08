@@ -1,2 +1,0 @@
-- Fix arrow behavior to be individual in selectors
-- The selectore must work individually
