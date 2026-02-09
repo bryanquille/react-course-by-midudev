@@ -19,13 +19,13 @@ function App() {
     setFromText,
   } = useTranslate()
 
-  const { 
-    selector, 
-    setFromSelector, 
-    setToSelector, 
-    isSelectorOpen, 
-    toggleSelector, 
-    closeSelector 
+  const {
+    selector,
+    setFromSelector,
+    setToSelector,
+    isSelectorOpen,
+    toggleSelector,
+    closeSelector
   } = useSelector()
 
   return (
@@ -41,7 +41,7 @@ function App() {
               toggleSelector={toggleSelector}
             />
             <InterchangeBtn
-              interchangeLanguages={interchangeLanguages} 
+              interchangeLanguages={interchangeLanguages}
               fromLanguage={fromLanguage}
             />
             <Selector
@@ -60,11 +60,11 @@ function App() {
                 setToLanguage={setToLanguage}
               />
               : <InputOutput
-                  fromText={fromText}
-                  setFromText={setFromText}
-                  loading={loading}
-                  result={result}
-                />
+                fromText={fromText}
+                setFromText={setFromText}
+                loading={loading}
+                result={result}
+              />
           }
         </div>
       </main>
