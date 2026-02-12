@@ -1,0 +1,7 @@
+POST http://localhost:3000/translate
+Content-Type: application/json
+
+{
+  "text": "Me encanta programar con TypeScript",
+  "target_lang": "en"
+}

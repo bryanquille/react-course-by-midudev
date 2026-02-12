@@ -3,7 +3,7 @@ import type { actionType, fromLanguageType, LanguageTypes, stateType } from "../
 import { AUTO_LANGUAGE, SUPPORTED_LANGUAGES } from "../constants/constants"
 
 const initialState = {
-  fromLanguage: AUTO_LANGUAGE,
+  fromLanguage: 'auto',
   toLanguage: 'en',
   fromText: '',
   result: '',
@@ -61,10 +61,12 @@ export const useTranslate = () => {
   }
 
   const setFromLanguage = (payload: fromLanguageType) => {
-    if (payload === toLanguage && fromLanguage != AUTO_LANGUAGE) {
+    if (payload === toLanguage && fromLanguage != 'auto') {
       dispatch({ type: 'SET_TO_LANGUAGE', payload: fromLanguage })
-    } else if (payload === toLanguage && fromLanguage === AUTO_LANGUAGE) {
+      console.log(fromLanguage)
+    } else if (payload === toLanguage && fromLanguage === 'auto') {
       const newLanguage = Object.keys(SUPPORTED_LANGUAGES).filter(lang => lang != toLanguage)
+      console.log(newLanguage)
       dispatch({ type: 'SET_TO_LANGUAGE', payload: newLanguage[0] })
     }
     dispatch({ type: "SET_FROM_LANGUAGE", payload })
@@ -73,6 +75,7 @@ export const useTranslate = () => {
   const setToLanguage = (payload: LanguageTypes) => {
     if (payload === fromLanguage) {
       const newLanguage = Object.keys(SUPPORTED_LANGUAGES).filter(lang => lang != fromLanguage)
+      console.log(newLanguage)
       dispatch({ type: 'SET_FROM_LANGUAGE', payload: newLanguage[0] })
     }
     dispatch({ type: "SET_TO_LANGUAGE", payload })

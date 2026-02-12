@@ -33,7 +33,9 @@ function Selector({
       className="cursor-pointer w-full h-fit px-3 py-2 flex justify-between items-center border-2 border-[#bdbdbd] rounded-lg"
       onClick={handleClick}
     >
-      <span className="text-[#2e22b2]">{option} {option === AUTO_LANGUAGE ? '' : `(${SUPPORTED_LANGUAGES[option as LanguageTypes]})`}</span>
+      <span className="text-[#2e22b2]">
+        {option === 'auto' ? '' : option} {option === 'auto' ? AUTO_LANGUAGE : `(${SUPPORTED_LANGUAGES[option as LanguageTypes]})`}
+      </span>
       <DropDownIcon isOpen={isOpen} />
     </button>
   )
