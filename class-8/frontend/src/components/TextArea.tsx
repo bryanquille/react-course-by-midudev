@@ -1,4 +1,3 @@
-import { translate } from "../services/translate"
 import type { selectorType } from "../types/types"
 
 type TextAreaPropsTypes = {
@@ -25,10 +24,6 @@ function TextArea({
     const textToTranslate = e.target.value
     if (setFromText && name === "from") {
       setFromText(textToTranslate)
-      translate(textToTranslate, "auto", "es")
-        .then(translatedText => {
-          console.log(translatedText)
-        })
     }
   }
 

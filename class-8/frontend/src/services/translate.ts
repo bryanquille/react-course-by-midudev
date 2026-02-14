@@ -1,7 +1,8 @@
 export const translate = async (
   text: string,
   fromLanguage: string,
-  toLanguage: string
+  toLanguage: string,
+  signal?: AbortSignal | null | undefined
 ) => {
   try {
     const response = await fetch("http://localhost:3000/translate", {
@@ -12,6 +13,7 @@ export const translate = async (
         target_lang: toLanguage,
         source_lang: fromLanguage // Enviamos 'auto' o el código del idioma (ES, EN, FR...)
       }),
+      signal
     });
 
     if (!response.ok) {
@@ -21,6 +23,9 @@ export const translate = async (
     const data = await response.json();
     return data.translations[0].text;
   } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      console.log('Fetch abortado');
+    }
     console.error("Error al conectar con el backend:", error);
     return "Error al traducir";
   }

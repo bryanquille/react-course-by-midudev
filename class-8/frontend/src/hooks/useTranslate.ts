@@ -1,4 +1,4 @@
-import { useReducer } from "react"
+import { useCallback, useReducer } from "react"
 import type { actionType, fromLanguageType, LanguageTypes, stateType } from "../types/types"
 import { AUTO_LANGUAGE, SUPPORTED_LANGUAGES } from "../constants/constants"
 
@@ -85,9 +85,9 @@ export const useTranslate = () => {
     dispatch({ type: "SET_FROM_TEXT", payload })
   }
 
-  const setResult = (payload: string) => {
+  const setResult = useCallback((payload: string) => {
     dispatch({ type: "SET_RESULT", payload })
-  }
+  }, [])
 
   return {
     fromLanguage,

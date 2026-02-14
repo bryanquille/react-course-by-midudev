@@ -17,6 +17,7 @@ function App() {
     setFromLanguage,
     setToLanguage,
     setFromText,
+    setResult,
   } = useTranslate()
 
   const {
@@ -60,6 +61,9 @@ function App() {
                 setToLanguage={setToLanguage}
               />
               : <InputOutput
+                fromLanguage={fromLanguage}
+                toLanguage={toLanguage}
+                setResult={setResult}
                 fromText={fromText}
                 setFromText={setFromText}
                 loading={loading}
