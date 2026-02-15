@@ -17,11 +17,12 @@ type MovieType = {
 
 export const getMovies = async (search: string) => {
   if(search === '') return null
+  const AUTH = import.meta.env.VITE_MOVIES_AUTH
   const options = {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MmYxNTY1YzFlNjY2OWQ0NjM5NGEzMDdkMzU4NDc4ZSIsIm5iZiI6MTczMzk3NDU1OS44MTMsInN1YiI6IjY3NWE1YTFmZGViNDFkZGU5ZGVjY2FmYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.TODKpnfs86Nemu3sK55xwCgF7GRzeKf68K9B4VJUffk'
+      Authorization: `Bearer ${AUTH}`
     }
   }
   const response = await fetch(`https://api.themoviedb.org/3/search/movie?query=${search}`, options)
