@@ -1,4 +1,6 @@
 import type { selectorType } from "../types/types"
+import ActionButton from "./ActionButton"
+import { CopyContentIcon, MicrophoneIcon, SpeakIcon } from "./Icons"
 
 type TextAreaPropsTypes = {
   name: selectorType
@@ -27,26 +29,61 @@ function TextArea({
     }
   }
 
+  /*
+   TODO: 
+     - Fix focus outline in TextAreas
+     - Add functionality to the Action Buttons
+     - Fix Loading text
+  */
+
   return (
-    <textarea
-      name={name}
-      className={`min-h-40 p-2 border-2 border-[#f0f0f0] rounded-lg text-2xl resize-none ${name === 'to'
-          ? result
-            ? ''
-            : 'bg-[#f5f5f5] focus-visible:outline-0'
-          : ''
+    <div
+      className={`min-h-40 flex flex-col border-2 border-[#f0f0f0] rounded-lg text-2xl resize-none ${name === 'to'
+        ? 'bg-[#f5f5f5]'
+        : 'focus-visible:outline-0'
         }`}
-      placeholder={placeholder}
-      readOnly={result ? false : readonly}
-      onChange={handleChange}
-      value={
+    >
+      <textarea
+        name={name}
+        className={`w-full p-2 grow resize-none 
+          ${name === 'to'
+            ? 'focus-visible:outline-0'
+            : ''
+          }`}
+        placeholder={placeholder}
+        readOnly={readonly}
+        onChange={handleChange}
+        value={
+          name === 'to'
+            ? loading
+              ? 'Traduciendo...'
+              : result
+            : fromText
+        }
+      ></textarea>
+      {
         name === 'to'
-          ? loading
-            ? 'Traduciendo...'
-            : result
-          : fromText
+        ? <div className="p-3 flex justify-start items-center gap-2">
+          <ActionButton
+            onClick={() => {console.log('working...')}}
+          >
+            <SpeakIcon />
+          </ActionButton>
+          <ActionButton
+            onClick={() => {console.log('working...')}}
+          >
+            <CopyContentIcon />
+          </ActionButton>
+        </div>
+        : <div className="p-3 flex justify-start items-center gap-2">
+          <ActionButton
+            onClick={() => {console.log('working...')}}
+          >
+            <MicrophoneIcon />
+          </ActionButton>
+        </div>
       }
-    ></textarea>
+    </div>
   )
 }
 

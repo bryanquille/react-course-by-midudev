@@ -30,7 +30,6 @@ function InputOutput({
     const signal = controller.signal;
     translate(debouncedValue, fromLanguage, toLanguage, signal)
       .then(res => {
-        console.log(res)
         if (!signal.aborted) {
           setResult(res);
         }
