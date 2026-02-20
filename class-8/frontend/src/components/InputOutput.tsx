@@ -44,7 +44,7 @@ function InputOutput({
     <div className="grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 gap-2">
       <TextArea
         name="from"
-        placeholder="Escribe..."
+        placeholder="Escribe, habla..."
         readonly={false}
         fromText={fromText}
         setFromText={setFromText}

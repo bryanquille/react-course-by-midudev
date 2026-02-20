@@ -19,23 +19,35 @@ function reducer(state: stateType, action: actionType) {
         fromLanguage: state.toLanguage,
         toLanguage: state.fromLanguage
       }
-    case 'SET_FROM_LANGUAGE':
+    case 'SET_FROM_LANGUAGE': {
+      if(state.fromLanguage === action.payload) return state
+      const loading = state.fromText !== ''
       return {
         ...state,
-        fromLanguage: action.payload
+        fromLanguage: action.payload,
+        result: '',
+        loading: loading
       }
-    case 'SET_TO_LANGUAGE':
+    }
+    case 'SET_TO_LANGUAGE': {
+      if(state.toLanguage === action.payload) return state
+      const loading = state.fromText !== ''
       return {
         ...state,
-        toLanguage: action.payload
+        toLanguage: action.payload,
+        result: '',
+        loading: loading
       }
-    case 'SET_FROM_TEXT':
+    }
+    case 'SET_FROM_TEXT': {
+      const loading = action.payload !== ''
       return {
         ...state,
-        loading: true,
+        loading: loading,
         fromText: action.payload,
         result: ''
       }
+    }
     case 'SET_RESULT':
       return {
         ...state,

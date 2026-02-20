@@ -1,6 +1,6 @@
 import type { selectorType } from "../types/types"
-import ActionButton from "./ActionButton"
-import { CopyContentIcon, MicrophoneIcon, SpeakIcon } from "./Icons"
+import { useFocus } from "../hooks/useFocus"
+import ActionButtonsContainer from "./ActionButtonsContainer"
 
 type TextAreaPropsTypes = {
   name: selectorType
@@ -22,6 +22,8 @@ function TextArea({
   setFromText,
 }: TextAreaPropsTypes) {
 
+  const { isFocus, activeFocus, disableFocus } = useFocus()
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement, HTMLTextAreaElement>) => {
     const textToTranslate = e.target.value
     if (setFromText && name === "from") {
@@ -29,27 +31,29 @@ function TextArea({
     }
   }
 
+  const copyToClipboard = () => {
+    if (result) {
+      navigator.clipboard.writeText(result)
+    }
+  }
+
   /*
    TODO: 
-     - Fix focus outline in TextAreas
-     - Add functionality to the Action Buttons
-     - Fix Loading text
+     - Add functionality to the Action Buttons (voice input, and speak translation)
   */
 
   return (
     <div
       className={`min-h-40 flex flex-col border-2 border-[#f0f0f0] rounded-lg text-2xl resize-none ${name === 'to'
         ? 'bg-[#f5f5f5]'
-        : 'focus-visible:outline-0'
+        : isFocus ? 'outline-2 outline-black' : ''
         }`}
     >
       <textarea
         name={name}
-        className={`w-full p-2 grow resize-none 
-          ${name === 'to'
-            ? 'focus-visible:outline-0'
-            : ''
-          }`}
+        className={`w-full p-2 grow resize-none focus-visible:outline-0`}
+        onFocus={activeFocus}
+        onBlur={disableFocus}
         placeholder={placeholder}
         readOnly={readonly}
         onChange={handleChange}
@@ -61,28 +65,10 @@ function TextArea({
             : fromText
         }
       ></textarea>
-      {
-        name === 'to'
-        ? <div className="p-3 flex justify-start items-center gap-2">
-          <ActionButton
-            onClick={() => {console.log('working...')}}
-          >
-            <SpeakIcon />
-          </ActionButton>
-          <ActionButton
-            onClick={() => {console.log('working...')}}
-          >
-            <CopyContentIcon />
-          </ActionButton>
-        </div>
-        : <div className="p-3 flex justify-start items-center gap-2">
-          <ActionButton
-            onClick={() => {console.log('working...')}}
-          >
-            <MicrophoneIcon />
-          </ActionButton>
-        </div>
-      }
+      <ActionButtonsContainer 
+        name={name}
+        copyToClipboard={copyToClipboard}
+      />
     </div>
   )
 }
