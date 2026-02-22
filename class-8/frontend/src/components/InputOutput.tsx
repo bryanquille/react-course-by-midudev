@@ -53,6 +53,7 @@ function InputOutput({
         name="to"
         placeholder="Traducción"
         readonly={true}
+        toLanguage={toLanguage}
         loading={loading}
         result={result}
       />

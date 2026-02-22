@@ -5,18 +5,19 @@ import { CopyContentIcon, MicrophoneIcon, SpeakIcon } from "./Icons"
 type ActionButtonsContainerPropsTypes = {
   name: selectorType
   copyToClipboard: () => void
+  textToSpeech: () => void
 }
 
 /*
   Adding a text notification when the user clicks the copy to clipboard button
 */
 
-function ActionButtonsContainer({ name, copyToClipboard }: ActionButtonsContainerPropsTypes) {
+function ActionButtonsContainer({ name, copyToClipboard, textToSpeech }: ActionButtonsContainerPropsTypes) {
   return (
     name === 'to'
       ? <div className="p-3 flex justify-start items-center gap-2">
         <ActionButton
-          onClick={() => { console.log('working...') }}
+          onClick={textToSpeech}
         >
           <SpeakIcon />
         </ActionButton>

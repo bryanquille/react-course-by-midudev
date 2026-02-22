@@ -1,11 +1,14 @@
 import type { selectorType } from "../types/types"
 import { useFocus } from "../hooks/useFocus"
 import ActionButtonsContainer from "./ActionButtonsContainer"
+import { voiceLanguage } from "../constants/constants"
+import { speak } from "../utils/speak"
 
 type TextAreaPropsTypes = {
   name: selectorType
   placeholder: string
   readonly: boolean
+  toLanguage?: string
   loading?: boolean
   fromText?: string
   result?: string
@@ -16,6 +19,7 @@ function TextArea({
   name,
   placeholder,
   readonly,
+  toLanguage,
   fromText,
   loading,
   result,
@@ -37,9 +41,16 @@ function TextArea({
     }
   }
 
+  const handleTextToSpeech = () => {
+    if (!result) return;
+
+    const voiceLang = voiceLanguage[toLanguage as keyof typeof voiceLanguage]
+    speak(result, voiceLang)
+  }
+
   /*
    TODO: 
-     - Add functionality to the Action Buttons (voice input, and speak translation)
+     - Add functionality to the Action Button for voice input
   */
 
   return (
@@ -65,9 +76,10 @@ function TextArea({
             : fromText
         }
       ></textarea>
-      <ActionButtonsContainer 
+      <ActionButtonsContainer
         name={name}
         copyToClipboard={copyToClipboard}
+        textToSpeech={handleTextToSpeech}
       />
     </div>
   )
