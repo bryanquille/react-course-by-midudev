@@ -1,18 +1,16 @@
 import type { selectorType } from "../types/types"
 import ActionButton from "./ActionButton"
 import { CopyContentIcon, MicrophoneIcon, SpeakIcon } from "./Icons"
+import Notification from "./Notification"
 
 type ActionButtonsContainerPropsTypes = {
   name: selectorType
   copyToClipboard: () => void
+  isCopied: boolean
   textToSpeech: () => void
 }
 
-/*
-  Adding a text notification when the user clicks the copy to clipboard button
-*/
-
-function ActionButtonsContainer({ name, copyToClipboard, textToSpeech }: ActionButtonsContainerPropsTypes) {
+function ActionButtonsContainer({ name, copyToClipboard, isCopied, textToSpeech }: ActionButtonsContainerPropsTypes) {
   return (
     name === 'to'
       ? <div className="p-3 flex justify-start items-center gap-2">
@@ -26,6 +24,7 @@ function ActionButtonsContainer({ name, copyToClipboard, textToSpeech }: ActionB
         >
           <CopyContentIcon />
         </ActionButton>
+        {isCopied && <Notification message="Texto copiado al portapapeles" />}
       </div>
       : <div className="p-3 flex justify-start items-center gap-2">
         <ActionButton

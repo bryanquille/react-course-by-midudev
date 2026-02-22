@@ -11,22 +11,23 @@ export const translate = async (
       body: JSON.stringify({
         text: text,
         target_lang: toLanguage,
-        source_lang: fromLanguage // Enviamos 'auto' o el código del idioma (ES, EN, FR...)
+        source_lang: fromLanguage,
       }),
       signal
     });
 
     if (!response.ok) {
-      throw new Error("Error en la respuesta del servidor");
+      throw new Error("Error en la respuesta del servidor")
     }
 
-    const data = await response.json();
-    return data.translations[0].text;
+    const data = await response.json()
+    return data.translations[0].text
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
-      console.log('Fetch abortado');
+      console.warn("Petición abortada-", error)
+      return "Traducción cancelada"
     }
-    console.error("Error al conectar con el backend:", error);
-    return "Error al traducir";
+    console.error("Error al conectar con el backend:", error)
+    return "Error al traducir"
   }
 };

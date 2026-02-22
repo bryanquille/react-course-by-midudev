@@ -3,6 +3,7 @@ import { useFocus } from "../hooks/useFocus"
 import ActionButtonsContainer from "./ActionButtonsContainer"
 import { voiceLanguage } from "../constants/constants"
 import { speak } from "../utils/speak"
+import { useState } from "react"
 
 type TextAreaPropsTypes = {
   name: selectorType
@@ -27,6 +28,7 @@ function TextArea({
 }: TextAreaPropsTypes) {
 
   const { isFocus, activeFocus, disableFocus } = useFocus()
+  const [isCopied, setIsCopied] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement, HTMLTextAreaElement>) => {
     const textToTranslate = e.target.value
@@ -38,6 +40,10 @@ function TextArea({
   const copyToClipboard = () => {
     if (result) {
       navigator.clipboard.writeText(result)
+      setIsCopied(true)
+      setTimeout(() => {
+        setIsCopied(false)
+      }, 2000)
     }
   }
 
@@ -79,6 +85,7 @@ function TextArea({
       <ActionButtonsContainer
         name={name}
         copyToClipboard={copyToClipboard}
+        isCopied={isCopied}
         textToSpeech={handleTextToSpeech}
       />
     </div>
