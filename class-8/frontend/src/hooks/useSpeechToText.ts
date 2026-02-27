@@ -58,5 +58,9 @@ export const useSpeechToText = (lang: string) => {
     }
   }, []);
 
-  return { isListening, transcript, startListening };
+  const resetTranscript = useCallback(() => {
+  setTranscript('');
+}, []);
+
+  return { isListening, transcript, startListening, resetTranscript };
 };

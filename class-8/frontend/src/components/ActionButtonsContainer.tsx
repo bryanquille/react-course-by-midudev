@@ -8,9 +8,18 @@ type ActionButtonsContainerPropsTypes = {
   copyToClipboard: () => void
   isCopied: boolean
   textToSpeech: () => void
+  onClick: () => void
+  isMicrophoneDisabled: boolean
 }
 
-function ActionButtonsContainer({ name, copyToClipboard, isCopied, textToSpeech }: ActionButtonsContainerPropsTypes) {
+function ActionButtonsContainer({ 
+  name,
+  copyToClipboard, 
+  isCopied, 
+  textToSpeech, 
+  onClick, 
+  isMicrophoneDisabled, 
+}: ActionButtonsContainerPropsTypes) {
   return (
     name === 'to'
       ? <div className="p-3 flex justify-start items-center gap-2">
@@ -28,7 +37,8 @@ function ActionButtonsContainer({ name, copyToClipboard, isCopied, textToSpeech 
       </div>
       : <div className="p-3 flex justify-start items-center gap-2">
         <ActionButton
-          onClick={() => { console.log('working...') }}
+          onClick={onClick}
+          disabled={isMicrophoneDisabled}
         >
           <MicrophoneIcon />
         </ActionButton>

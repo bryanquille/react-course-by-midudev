@@ -3,12 +3,14 @@ import { useFocus } from "../hooks/useFocus"
 import ActionButtonsContainer from "./ActionButtonsContainer"
 import { voiceLanguage } from "../constants/constants"
 import { speak } from "../utils/speak"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useSpeechToText } from "../hooks/useSpeechToText"
 
 type TextAreaPropsTypes = {
   name: selectorType
   placeholder: string
   readonly: boolean
+  fromLanguage?: string
   toLanguage?: string
   loading?: boolean
   fromText?: string
@@ -20,6 +22,7 @@ function TextArea({
   name,
   placeholder,
   readonly,
+  fromLanguage,
   toLanguage,
   fromText,
   loading,
@@ -29,6 +32,14 @@ function TextArea({
 
   const { isFocus, activeFocus, disableFocus } = useFocus()
   const [isCopied, setIsCopied] = useState(false)
+  const { isListening, transcript, startListening, resetTranscript } = useSpeechToText(fromLanguage || 'es-ES')
+
+  useEffect(() => {
+    if(transcript && setFromText) {
+      setFromText(transcript)
+      resetTranscript()
+    }
+  }, [transcript, setFromText, resetTranscript])
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement, HTMLTextAreaElement>) => {
     const textToTranslate = e.target.value
@@ -53,11 +64,6 @@ function TextArea({
     const voiceLang = voiceLanguage[toLanguage as keyof typeof voiceLanguage]
     speak(result, voiceLang)
   }
-
-  /*
-   TODO: 
-     - Add functionality to the Action Button for voice input
-  */
 
   return (
     <div
@@ -87,6 +93,8 @@ function TextArea({
         copyToClipboard={copyToClipboard}
         isCopied={isCopied}
         textToSpeech={handleTextToSpeech}
+        onClick={startListening}
+        isMicrophoneDisabled={isListening}
       />
     </div>
   )
