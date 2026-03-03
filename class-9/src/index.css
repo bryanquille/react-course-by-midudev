@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  @apply mx-6 bg-tremor-background dark:bg-dark-tremor-background dark:text-dark-tremor-content-emphasis;
+}
