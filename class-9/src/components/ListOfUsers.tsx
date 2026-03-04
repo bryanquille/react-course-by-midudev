@@ -8,29 +8,10 @@ import {
   TableRow,
   Title,
 } from '@tremor/react';
-
-const users = [
-  {
-    id: 1,
-    name: 'John Doe',
-    email: 'johndoe@email.com',
-    github: 'johndoe',
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    email: 'janesmith@email.com',
-    github: 'janesmith',
-  },
-  {
-    id: 3,
-    name: 'Bob Johnson',
-    email: 'bobjohnson@email.com',
-    github: 'bobjohnson',
-  },
-];
+import { useAppSelector } from '../hooks/store';
 
 export default function ListOfUsers() {
+  const users = useAppSelector((state) => state.users);
   return (
     <>
       <div className="sm:flex sm:items-center sm:justify-between sm:space-x-10">
