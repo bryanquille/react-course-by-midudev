@@ -1,8 +1,10 @@
-import { Button, Card, TextInput, Title } from "@tremor/react"
+import { Badge, Button, Card, TextInput, Title } from "@tremor/react"
 import { useUserActions } from "../hooks/useUserActions"
+import { useState } from "react"
 
 function CreateNewUser() {
   const { handleAddUsers } = useUserActions()
+  const [result, setResult] = useState<'ok' | 'ko' | null>(null)
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -13,7 +15,13 @@ function CreateNewUser() {
     const email = formData.get('email') as string
     const github = formData.get('github') as string
 
+    if(!name || !email || !github) {
+      return setResult('ko')
+    }
+
     handleAddUsers({ name, email, github })
+    setResult('ko')
+    form.reset()
   }
   return (
     <Card className="mt-8">
@@ -34,13 +42,17 @@ function CreateNewUser() {
           placeholder="Ingresa el nombre de usuario de GitHub"
           name="github"
         />
-      <div>
+      <div className="flex items-center gap-4">
         <Button
           type="submit"
           className=""
         >
           Crear Usuario
         </Button>
+        <span>
+          {result === 'ok' && <Badge color='green'>Guardado correctamente</Badge>}
+          {result === 'ko' && <Badge color='red'>Error en los campos de registro</Badge>}
+        </span>
       </div>
       </form>
     </Card>
