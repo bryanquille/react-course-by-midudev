@@ -20,7 +20,7 @@ function CreateNewUser() {
     }
 
     handleAddUsers({ name, email, github })
-    setResult('ko')
+    setResult('ok')
     form.reset()
   }
   return (
