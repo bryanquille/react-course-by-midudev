@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import type { UserType } from "./types"
 import UsersList from "./components/UsersList"
 
@@ -6,6 +6,7 @@ function App() {
   const [users, setUsers] = useState<UserType[]>([])
   const [showColors, setShowColors] = useState(false)
   const [sortByCountry, serSortByCountry] = useState(false)
+  const initialUsers = useRef<UserType[]>([])
 
   useEffect(() => {
     const getUsers = async () => {
@@ -13,6 +14,7 @@ function App() {
         const response = await fetch('https://randomuser.me/api/?results=100')
         const data = await response.json()
         setUsers(data.results)
+        initialUsers.current = data.results
       } catch (error) {
         console.log(error)
       }
@@ -29,15 +31,19 @@ function App() {
     serSortByCountry(prevState => !prevState)
   }
 
-  const sortedUsers = sortByCountry 
+  const sortedUsers = sortByCountry
     ? [...users].sort((a, b) => {
       return a.location.country.localeCompare(b.location.country)
     })
     : users
 
   const handleDeleteUser = (email: string) => {
-    const filteredUsers = users.filter(user => user.email !== email )
+    const filteredUsers = users.filter(user => user.email !== email)
     setUsers(filteredUsers)
+  }
+
+  const handleReset = () => {
+    setUsers(initialUsers.current)
   }
 
   return (
@@ -55,6 +61,12 @@ function App() {
           onClick={toggleSortByCountry}
         >
           Ordenar por país
+        </button>
+        <button
+          type="button"
+          onClick={handleReset}
+        >
+          Reestablecer usuarios
         </button>
       </header>
       <main>
