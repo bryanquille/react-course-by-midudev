@@ -5,6 +5,7 @@ import UsersList from "./components/UsersList"
 function App() {
   const [users, setUsers] = useState<UserType[]>([])
   const [showColors, setShowColors] = useState(false)
+  const [sortByCountry, serSortByCountry] = useState(false)
 
   useEffect(() => {
     const getUsers = async () => {
@@ -24,6 +25,16 @@ function App() {
     setShowColors(!showColors)
   }
 
+  const toggleSortByCountry = () => {
+    serSortByCountry(prevState => !prevState)
+  }
+
+  const sortedUsers = sortByCountry 
+    ? [...users].sort((a, b) => {
+      return a.location.country.localeCompare(b.location.country)
+    })
+    : users
+
   return (
     <div>
       <h1 className="my-6 text-center font-bold text-4xl">Prueba Técnica</h1>
@@ -34,10 +45,16 @@ function App() {
         >
           Colorear filas
         </button>
+        <button
+          type="button"
+          onClick={toggleSortByCountry}
+        >
+          Ordenar por país
+        </button>
       </header>
       <main>
         <UsersList
-          users={users}
+          users={sortedUsers}
           showColors={showColors}
         />
       </main>
