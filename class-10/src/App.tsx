@@ -4,6 +4,8 @@ import UsersList from "./components/UsersList"
 
 function App() {
   const [users, setUsers] = useState<UserType[]>([])
+  const [showColors, setShowColors] = useState(false)
+
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -18,10 +20,27 @@ function App() {
     getUsers()
   }, [])
 
+  const toggleColors = () => {
+    setShowColors(!showColors)
+  }
+
   return (
     <div>
-      <h1 className="pt-6 text-center">Prueba Técnica</h1>
-      <UsersList users={users} />
+      <h1 className="my-6 text-center font-bold text-4xl">Prueba Técnica</h1>
+      <header>
+        <button
+          type="button"
+          onClick={toggleColors}
+        >
+          Colorear filas
+        </button>
+      </header>
+      <main>
+        <UsersList
+          users={users}
+          showColors={showColors}
+        />
+      </main>
     </div>
   )
 }

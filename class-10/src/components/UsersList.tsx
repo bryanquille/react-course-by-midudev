@@ -2,9 +2,10 @@ import type { UserType } from "../types"
 
 type UsersListPropsTypes = {
   users: UserType[]
+  showColors: boolean
 }
 
-function UsersList({ users }: UsersListPropsTypes) {
+function UsersList({ users, showColors }: UsersListPropsTypes) {
   return (
     <table>
       <thead>
@@ -18,9 +19,15 @@ function UsersList({ users }: UsersListPropsTypes) {
       </thead>
       <tbody>
         {
-          users.map(user => {
+          users.map((user, index) => {
+            const cellsBg = index % 2 === 0 ? '#333' : '#555'
+            const color = showColors ? cellsBg : 'transparent'
+
             return (
-              <tr key={user.id.value}>
+              <tr
+                key={index}
+                style={{backgroundColor: color}}
+              >
                 <td>
                   <img
                     src={user.picture.thumbnail}
