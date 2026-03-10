@@ -35,6 +35,11 @@ function App() {
     })
     : users
 
+  const handleDeleteUser = (email: string) => {
+    const filteredUsers = users.filter(user => user.email !== email )
+    setUsers(filteredUsers)
+  }
+
   return (
     <div>
       <h1 className="my-6 text-center font-bold text-4xl">Prueba Técnica</h1>
@@ -56,6 +61,7 @@ function App() {
         <UsersList
           users={sortedUsers}
           showColors={showColors}
+          deleteUser={handleDeleteUser}
         />
       </main>
     </div>
