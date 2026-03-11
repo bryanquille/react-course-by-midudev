@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import type { UserType } from "./types"
 import UsersList from "./components/UsersList"
 
@@ -7,6 +7,7 @@ function App() {
   const [showColors, setShowColors] = useState(false)
   const [sortByCountry, serSortByCountry] = useState(false)
   const initialUsers = useRef<UserType[]>([])
+  const [filterCountry, setFilterCountry] = useState<string>("")
 
   useEffect(() => {
     const getUsers = async () => {
@@ -31,11 +32,21 @@ function App() {
     serSortByCountry(prevState => !prevState)
   }
 
-  const sortedUsers = sortByCountry
-    ? [...users].sort((a, b) => {
-      return a.location.country.localeCompare(b.location.country)
-    })
-    : users
+  const filteredUsersByCountry = useMemo(() => {
+    return filterCountry && filterCountry.length > 0
+      ? users.filter(user => {
+        return user.location.country.toLowerCase().includes(filterCountry.toLowerCase())
+      })
+      : users
+  }, [users, filterCountry])
+
+  const sortedUsers = useMemo(() => {
+    return sortByCountry
+      ? [...filteredUsersByCountry].sort((a, b) => {
+        return a.location.country.localeCompare(b.location.country)
+      })
+      : filteredUsersByCountry
+  }, [filteredUsersByCountry, sortByCountry])
 
   const handleDeleteUser = (email: string) => {
     const filteredUsers = users.filter(user => user.email !== email)
@@ -44,6 +55,11 @@ function App() {
 
   const handleReset = () => {
     setUsers(initialUsers.current)
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
+    const country = e.target.value
+    setFilterCountry(country)
   }
 
   return (
@@ -68,6 +84,14 @@ function App() {
         >
           Reestablecer usuarios
         </button>
+        <input
+          type="text"
+          name="country"
+          id="country"
+          onChange={handleChange}
+          value={filterCountry || ""}
+          className="px-4 py-2 border-2 border-neutral-200 rounded-md"
+        />
       </header>
       <main>
         <UsersList
