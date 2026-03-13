@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react"
-import type { UserType } from "./types"
+import { SortBy, type UserType } from "./types.d"
 import UsersList from "./components/UsersList"
 
 function App() {
   const [users, setUsers] = useState<UserType[]>([])
   const [showColors, setShowColors] = useState(false)
-  const [sortByCountry, serSortByCountry] = useState(false)
+  const [sorting, setSorting] = useState<SortBy>(SortBy.NONE)
   const initialUsers = useRef<UserType[]>([])
   const [filterCountry, setFilterCountry] = useState<string>("")
 
@@ -29,7 +29,8 @@ function App() {
   }
 
   const toggleSortByCountry = () => {
-    serSortByCountry(prevState => !prevState)
+    const newSortingValue = sorting === SortBy.NONE ? SortBy.COUNTRY : SortBy.NONE
+    setSorting(newSortingValue)
   }
 
   const filteredUsersByCountry = useMemo(() => {
@@ -41,12 +42,12 @@ function App() {
   }, [users, filterCountry])
 
   const sortedUsers = useMemo(() => {
-    return sortByCountry
+    return sorting
       ? [...filteredUsersByCountry].sort((a, b) => {
         return a.location.country.localeCompare(b.location.country)
       })
       : filteredUsersByCountry
-  }, [filteredUsersByCountry, sortByCountry])
+  }, [filteredUsersByCountry, sorting])
 
   const handleDeleteUser = (email: string) => {
     const filteredUsers = users.filter(user => user.email !== email)
