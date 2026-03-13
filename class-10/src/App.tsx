@@ -9,6 +9,9 @@ function App() {
   const initialUsers = useRef<UserType[]>([])
   const [filterCountry, setFilterCountry] = useState<string | null>(null)
 
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
+
   const toggleColors = () => {
     setShowColors(!showColors)
   }
@@ -33,13 +36,21 @@ function App() {
 
   useEffect(() => {
     const getUsers = async () => {
+      setLoading(true)
+      setError(false)
       try {
-        const response = await fetch('https://randomuser.me/api/?results=100')
+        const response = await fetch('https://randomuser.me/api/?results=10')
+        if (!response.ok) {
+          throw new Error('Error en la petición')
+        }
         const data = await response.json()
         setUsers(data.results)
         initialUsers.current = data.results
       } catch (error) {
+        setError(true)
         console.log(error)
+      } finally {
+        setLoading(false)
       }
     }
 
@@ -119,12 +130,29 @@ function App() {
         />
       </header>
       <main>
-        <UsersList
-          users={sortedUsers}
-          showColors={showColors}
-          deleteUser={handleDeleteUser}
-          changeSorting={handleChangeSort}
-        />
+        {loading && (
+          <p className="text-center font-semibold text-lg">
+            Cargando usuarios...
+          </p>
+        )}
+        {!loading && error && (
+          <p className="text-center font-semibold text-lg">
+            Hubo un error al cargar los usuarios
+          </p>
+        )}
+        {!loading && !error && sortedUsers.length === 0 && (
+          <p className="text-center font-semibold text-lg">
+            No hay usuarios para mostrar
+          </p>
+        )}
+        {!loading && !error && sortedUsers.length > 0 && (
+          <UsersList
+            users={sortedUsers}
+            showColors={showColors}
+            deleteUser={handleDeleteUser}
+            changeSorting={handleChangeSort}
+          />
+        )}
       </main>
     </div>
   )
