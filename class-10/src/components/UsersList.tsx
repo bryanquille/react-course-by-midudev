@@ -1,20 +1,36 @@
-import type { UserType } from "../types"
+import { SortBy, type UserType } from "../types.d"
 
 type UsersListPropsTypes = {
   users: UserType[]
   showColors: boolean
   deleteUser: (email: string) => void
+  changeSorting: (sort: SortBy) => void
 }
 
-function UsersList({ users, showColors, deleteUser }: UsersListPropsTypes) {
+function UsersList({ users, showColors, deleteUser, changeSorting }: UsersListPropsTypes) {
   return (
     <table>
       <thead>
         <tr>
           <th>Foto</th>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>País</th>
+          <th
+            onClick={() => changeSorting(SortBy.NAME)}
+            className="cursor-pointer"
+          >
+            Nombre
+          </th>
+          <th
+            onClick={() => changeSorting(SortBy.LAST)}
+            className="cursor-pointer"
+          >
+            Apellido
+          </th>
+          <th
+            onClick={() => changeSorting(SortBy.COUNTRY)}
+            className="cursor-pointer"
+          >
+            País
+          </th>
           <th>Acciones</th>
         </tr>
       </thead>

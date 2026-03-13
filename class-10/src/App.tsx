@@ -7,7 +7,29 @@ function App() {
   const [showColors, setShowColors] = useState(false)
   const [sorting, setSorting] = useState<SortBy>(SortBy.NONE)
   const initialUsers = useRef<UserType[]>([])
-  const [filterCountry, setFilterCountry] = useState<string>("")
+  const [filterCountry, setFilterCountry] = useState<string | null>(null)
+
+  const toggleColors = () => {
+    setShowColors(!showColors)
+  }
+
+  const toggleSortByCountry = () => {
+    const newSortingValue = sorting === SortBy.NONE ? SortBy.COUNTRY : SortBy.NONE
+    setSorting(newSortingValue)
+  }
+
+  const handleReset = () => {
+    setUsers(initialUsers.current)
+  }
+
+  const handleDeleteUser = (email: string) => {
+    const filteredUsers = users.filter(user => user.email !== email)
+    setUsers(filteredUsers)
+  }
+
+  const handleChangeSort = (sort: SortBy) => {
+    setSorting(sort)
+  }
 
   useEffect(() => {
     const getUsers = async () => {
@@ -24,17 +46,8 @@ function App() {
     getUsers()
   }, [])
 
-  const toggleColors = () => {
-    setShowColors(!showColors)
-  }
-
-  const toggleSortByCountry = () => {
-    const newSortingValue = sorting === SortBy.NONE ? SortBy.COUNTRY : SortBy.NONE
-    setSorting(newSortingValue)
-  }
-
-  const filteredUsersByCountry = useMemo(() => {
-    return filterCountry && filterCountry.length > 0
+  const filteredUsers = useMemo(() => {
+    return filterCountry !== null && filterCountry.length > 0
       ? users.filter(user => {
         return user.location.country.toLowerCase().includes(filterCountry.toLowerCase())
       })
@@ -42,21 +55,31 @@ function App() {
   }, [users, filterCountry])
 
   const sortedUsers = useMemo(() => {
-    return sorting
-      ? [...filteredUsersByCountry].sort((a, b) => {
+    if (sorting === SortBy.NONE) return filteredUsers
+
+    if (sorting === SortBy.COUNTRY) {
+      return [...filteredUsers].sort((a, b) => {
         return a.location.country.localeCompare(b.location.country)
       })
-      : filteredUsersByCountry
-  }, [filteredUsersByCountry, sorting])
+    }
 
-  const handleDeleteUser = (email: string) => {
-    const filteredUsers = users.filter(user => user.email !== email)
-    setUsers(filteredUsers)
-  }
+    if (sorting === SortBy.NAME) {
+      return [...filteredUsers].sort((a, b) => {
+        return a.name.first.localeCompare(b.name.first)
+      })
+    }
+    if (sorting === SortBy.LAST) {
+      return [...filteredUsers].sort((a, b) => {
+        return a.name.last.localeCompare(b.name.last)
+      })
+    }
 
-  const handleReset = () => {
-    setUsers(initialUsers.current)
-  }
+    return filteredUsers
+  }, [filteredUsers, sorting])
+
+
+
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
     const country = e.target.value
@@ -91,6 +114,7 @@ function App() {
           id="country"
           onChange={handleChange}
           value={filterCountry || ""}
+          placeholder="Ingresa un país"
           className="px-4 py-2 border-2 border-neutral-200 rounded-md"
         />
       </header>
@@ -99,6 +123,7 @@ function App() {
           users={sortedUsers}
           showColors={showColors}
           deleteUser={handleDeleteUser}
+          changeSorting={handleChangeSort}
         />
       </main>
     </div>
