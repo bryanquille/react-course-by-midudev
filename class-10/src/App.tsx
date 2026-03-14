@@ -2,12 +2,22 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { SortBy, type UserType } from "./types.d"
 import UsersList from "./components/UsersList"
 
+const fetchUsers = async (page: number): Promise<UserType[]> => {
+  const response = await fetch(`https://randomuser.me/api/?results=10&seed=abc&page=${page}`)
+  if (!response.ok) {
+    throw new Error('Error en la petición')
+  }
+  const data = await response.json()
+  return data.results
+}
+
 function App() {
   const [users, setUsers] = useState<UserType[]>([])
   const [showColors, setShowColors] = useState(false)
   const [sorting, setSorting] = useState<SortBy>(SortBy.NONE)
   const initialUsers = useRef<UserType[]>([])
   const [filterCountry, setFilterCountry] = useState<string | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -35,27 +45,28 @@ function App() {
   }
 
   useEffect(() => {
-    const getUsers = async () => {
+    const loadErrorState = () => {
       setLoading(true)
       setError(false)
-      try {
-        const response = await fetch('https://randomuser.me/api/?results=10')
-        if (!response.ok) {
-          throw new Error('Error en la petición')
-        }
-        const data = await response.json()
-        setUsers(data.results)
-        initialUsers.current = data.results
-      } catch (error) {
+    }
+    loadErrorState()
+
+    fetchUsers(currentPage)
+      .then(newUsers => {
+        setUsers(prevUsers => {
+          const updatedUsers = prevUsers.concat(newUsers)
+          initialUsers.current = updatedUsers
+          return updatedUsers
+        })
+      })
+      .catch(error => {
         setError(true)
         console.log(error)
-      } finally {
+      })
+      .finally(() => {
         setLoading(false)
-      }
-    }
-
-    getUsers()
-  }, [])
+      })
+  }, [currentPage])
 
   const filteredUsers = useMemo(() => {
     return filterCountry !== null && filterCountry.length > 0
@@ -87,10 +98,6 @@ function App() {
 
     return filteredUsers
   }, [filteredUsers, sorting])
-
-
-
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
     const country = e.target.value
@@ -130,22 +137,7 @@ function App() {
         />
       </header>
       <main>
-        {loading && (
-          <p className="text-center font-semibold text-lg">
-            Cargando usuarios...
-          </p>
-        )}
-        {!loading && error && (
-          <p className="text-center font-semibold text-lg">
-            Hubo un error al cargar los usuarios
-          </p>
-        )}
-        {!loading && !error && sortedUsers.length === 0 && (
-          <p className="text-center font-semibold text-lg">
-            No hay usuarios para mostrar
-          </p>
-        )}
-        {!loading && !error && sortedUsers.length > 0 && (
+        {sortedUsers.length > 0 && (
           <UsersList
             users={sortedUsers}
             showColors={showColors}
@@ -153,6 +145,29 @@ function App() {
             changeSorting={handleChangeSort}
           />
         )}
+        {loading && (
+          <p className="text-center font-semibold text-lg">
+            Cargando usuarios...
+          </p>
+        )}
+        {error && (
+          <p className="text-center font-semibold text-lg">
+            Hubo un error al cargar los usuarios
+          </p>
+        )}
+        {!error && sortedUsers.length === 0 && (
+          <p className="text-center font-semibold text-lg">
+            No hay usuarios para mostrar
+          </p>
+        )}
+        {!loading && !error && sortedUsers.length > 0 && (
+          <button
+            type="button"
+            onClick={() => setCurrentPage(currentPage + 1)}
+            className="block my-4 mx-auto"
+          >
+            Cargar más resultados
+        </button>)}
       </main>
     </div>
   )
